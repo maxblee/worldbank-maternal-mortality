@@ -1,0 +1,60 @@
+.App {
+  margin-left: 10%;
+}
+
+.gfx__legend {
+  font-size: 14px;
+}
+
+.gfx__credit {
+  color: rgb(100,100,100);
+}
+
+.gfx__circle {
+  fill: maroon;
+  fill-opacity: 0.4;
+  stroke: maroon;
+  stroke-width: 2;
+}
+
+.gfx__circle:hover {
+  transform: scale(1.1);
+  stroke-width: 3;
+}
+
+#tooltip {
+  position: absolute;
+  border: 2px solid black;
+  display: none;
+  top: 0;
+  left: 0;
+  background-color: white;
+  padding: 5px;
+  max-width: 200px;
+}
+
+#tooltip > p {
+  margin: 0;
+  font-size: 14px;
+}
+
+#tooltip-country {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.expand__button {
+  border: none;
+  border-radius: 25px;
+  background-color: maroon;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.expand__button:hover, .expand__button:focus {
+  opacity: 0.5;
+}
