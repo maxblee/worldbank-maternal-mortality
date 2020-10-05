@@ -3,8 +3,9 @@ import './App.css';
 const d3 = require("d3");
 
 class MortalityTable extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.fileName = props.fileName;
     this.state = {
       data: {
         data: [],
@@ -16,17 +17,15 @@ class MortalityTable extends React.Component {
       circleRange: d3.scaleLinear(),
       maxRadius: 25,
       minRadius: 0.2,
-      expanded: false
     };
 
-    this.toggleExpansion = this.toggleExpansion.bind(this)
     this.toolTipMouseOver = this.toolTipMouseOver.bind(this)
     this.toolTipMouseOut = this.toolTipMouseOut.bind(this)
     this.renderCircle = this.renderCircle.bind(this)
   }
 
   componentDidMount() {
-    fetch("./data.json")
+    fetch(this.fileName)
       .then(res => res.json())
       .then(json => {
         this.setState({data: json})
@@ -71,10 +70,6 @@ class MortalityTable extends React.Component {
     )
   }
 
-  toggleExpansion() {
-    this.setState({expanded: !this.state.expanded})
-  }
-
   render() {
     return (
       <div>
@@ -99,16 +94,13 @@ class MortalityTable extends React.Component {
         </thead>
         <tbody id="mortality-table">
           {this.state.data.countries.map((country, idx) => {
-            if (this.state.expanded || idx < 10) {
               return (<tr key={country}>
                 <td className="country-selection"><b>{country}</b></td>
                 {this.state.data.data[idx].map((dataCell, dataIdx) => <td>{this.renderCircle(dataCell, idx, dataIdx)}</td>)}
               </tr>)
-            }
           })}
         </tbody>
       </table>
-      <button type="button" className="expand__button" onClick={this.toggleExpansion}>{this.state.expanded ? 'Shrink' : 'Expand'} Country List</button>
       </div>
     )
   }
@@ -118,7 +110,20 @@ function App() {
   return (
     <div className="App">
       <h1>Maternal Mortality Across the World</h1>
-      <MortalityTable></MortalityTable>
+      <h2>Income</h2>
+      <p>Maternal mortality rates are far worse in lower-income countries than they
+        are in higher-income countries. While some countries like Norway have had
+        mortality rates as low as 2 maternal deaths for every 100,000 live births,
+        Chad, Sierra Leone, and South Sudan have consistently had maternal mortality
+        rates of 1,000 deaths per 100,000 live births.
+      </p>
+      <MortalityTable fileName="./income.json"></MortalityTable>
+      <h2>Decreasing Mortality</h2>
+      <p>Still, some countries have had substantial improvements. Overall, maternal
+        mortality slightly decreased from 2011 to 2017. And some countries like Afghanistan
+        saw nearly 30 percent decreases in maternal mortality rates.
+      </p>
+      <MortalityTable fileName="./decreasing-mortality.json"></MortalityTable>
       <div id="tooltip">
         <p><span id="tooltip-country"></span></p>
         <p><span id="tooltip-rate"></span> maternal deaths per 100,000 live births.</p>
